@@ -1,13 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "./RBNode.h"
 #include "./RedBlackTree.h"
 
 int testCompare(void *data1, void* data2);
-
-int main() {
-  printf("main\n");
-}
 
 /** @override */
 RedBlackTree* newRedBlackTree(cmpFunc compare) {

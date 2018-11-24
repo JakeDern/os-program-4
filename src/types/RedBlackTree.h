@@ -3,6 +3,23 @@
 
 #include "./RBNode.h"
 
+/**
+ * This function will provide an ordering for any two
+ * items contained in the red black tree and will be used
+ * for the insertion/search functions.
+ * 
+ * If this function does not run in constant time then
+ * the behavior of the tree will be negatively impacted
+ * 
+ * If this function does not work as defined then the
+ * behavior of the tree will be undefined
+ * 
+ * @param void* item1 a pointer to the first item
+ * @param void* item2 a pointer to the second item
+ * @returns a negative iteger iff item1 < item2
+ *          a positive integer iff item1 > item2
+ *          0 iff item1 === item2
+ **/
 typedef int (*cmpFunc)(void*, void*);
 
 typedef void (*destruct)(void*);
