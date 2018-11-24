@@ -5,9 +5,14 @@
 
 enum COLOR {BLACK=0, RED=1};
 
+typedef struct KVPair {
+  void *key;
+  void *val;
+} KVPair;
+
 typedef struct RBMNode {
   enum COLOR color;
-  void *data;
+  KVPair *kv;
   struct RBMNode *parent;
   struct RBMNode *left;
   struct RBMNode *right; 
@@ -19,6 +24,6 @@ typedef struct RBMNode {
  * 
  * @returns RBMNode*
  **/
-extern RBMNode* newRBMNode(void *data);
+extern RBMNode* newRBMNode(void *key, void *val);
 
 #endif

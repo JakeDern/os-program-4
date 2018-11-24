@@ -15,22 +15,17 @@ RedBlackMap* newRedBlackMap(cmpFunc compare) {
     map->size = 0;
     map->root = NULL;
     map->cmpKey = compare;
-    map->dKey = NULL;
 
     return map;
 }
 
-void RBMDestructKey(RedBlackMap *map, destructKey dKey) {
-    map->dKey = dKey;
-}
-
 /** @override */
-void RBMPut(RedBlackMap *map, void *data) {
+void RBMPut(RedBlackMap *map, void *key, void *val) {
     printf("insert\n");
 }
 
 /** @override */
-void RBMDelete(RedBlackMap *map, void *data) {
+KVPair* RBMDelete(RedBlackMap *map, void *key) {
 
 }
 
@@ -39,7 +34,7 @@ void* RBMSearch(RedBlackMap *map, void *key) {
   return NULL;
 }
 
-void RBMReplace(RedBlackMap *map, void *key, void *val) {
+void* RBMReplace(RedBlackMap *map, void *key, void *val) {
 
 }
 

@@ -11,7 +11,7 @@ int main() {
     RedBlackMap *tree = newRedBlackMap((cmpFunc) &intCompare);
     printf("Construct\n");
     size_t s;
-    Integer *i = malloc(sizeof(Integer));
+    int *i = malloc(sizeof(int));
     *i = 5;
     printf("Int is %d\n", *i);
     free(i);

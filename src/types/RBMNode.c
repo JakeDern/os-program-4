@@ -4,15 +4,21 @@
 #include "./RBMNode.h"
 
 /** @override */
-RBMNode* newRBMNode(void *data) {
+RBMNode* newRBMNode(void *key, void *val) {
     RBMNode *node;
     if ( (node = malloc(sizeof(RBMNode))) == NULL) {
         printf("Failed to allocate memory for RBMNode\n");
         exit(1);
     }
 
+    if ( (node->kv = malloc(sizeof(KVPair))) == NULL) {
+        printf("Failed to allocate memory for RBMNode");
+        exit(1);
+    }
+
     node->color = RED;
-    node->data = data;
+    node->kv->key = key;
+    node->kv->val = val;
 
     return node;
 }
