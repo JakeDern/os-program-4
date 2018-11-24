@@ -40,7 +40,11 @@ void* RBSearch(RedBlackTree *tree, void *data) {
 }
 
 /** @override */
-void RBFree(RedBlackTree * tree) {
+void RBDestroy(RedBlackTree *tree) {
+
+}
+
+void RBDestroyAndFree(RedBlackTree *tree, destruct destructor) {
 
 }
 

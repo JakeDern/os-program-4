@@ -5,6 +5,8 @@
 
 typedef int (*cmpFunc)(void*, void*);
 
+typedef void (*destruct)(void*);
+
 typedef struct RedBlackTree {
     int size;
     RBNode *root;
@@ -46,10 +48,21 @@ extern void RBDelete(RedBlackTree *tree, void *data);
 extern void* RBSearch(RedBlackTree *tree, void *data);
 
 /**
- * Frees all nodes and data from the RedBlackTRee
+ * Destructs the provided RedBlackTree, but
+ * does not free the data contained within it.
  * 
- * @param *tree the tree to free
+ * @param *tree the tree to destroy
  **/
-extern void RBFree(RedBlackTree *tree);
+extern void RBDestroy(RedBlackTree *tree);
+
+/**
+ * Destructs the provided RedBlackTree and frees all
+ * data provided to it using the provided deconstructor
+ *
+ * @param tree the tree to destroy
+ * @param destructor a function which will be called on each
+ * data item in the tree to destroy it
+ **/
+extern void RBDestroyAndFree(RedBlackTree *tree, destruct destructor);
 
 #endif
