@@ -4,8 +4,6 @@
 #include "./RBNode.h"
 #include "./RedBlackTree.h"
 
-int testCompare(void *data1, void* data2);
-
 /** @override */
 RedBlackTree* newRedBlackTree(cmpFunc compare) {
     RedBlackTree *tree;
@@ -43,9 +41,4 @@ void RBDestroy(RedBlackTree *tree) {
 
 void RBDestroyAndFree(RedBlackTree *tree, destruct destructor) {
 
-}
-
-int testCompare(void *data1, void* data2) {
-    printf("testCompare\n");
-    return *((int*) data1) - *((int*) data2);
 }
