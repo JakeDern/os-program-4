@@ -1,11 +1,11 @@
-#ifndef _REDBLACKTREE
-#define _REDBLACKTREE
+#ifndef _RedBlackMap
+#define _RedBlackMap
 
-#include "./RBNode.h"
+#include "./RBMNode.h"
 
 /**
- * This function will provide an ordering for any two
- * items contained in the red black tree and will be used
+ * This function will provide an ordering for any keys
+ * contained in the red black tree map and will be used
  * for the insertion/search functions.
  * 
  * If this function does not run in constant time then
@@ -21,39 +21,42 @@
  *          0 iff item1 === item2
  **/
 typedef int (*cmpFunc)(void*, void*);
+ 
+typedef void (*destructKey)(void*);
 
-typedef void (*destruct)(void*);
+typedef void (*destructVal)(void*);
 
-typedef struct RedBlackTree {
+typedef struct RedBlackMap {
     int size;
-    RBNode *root;
-    cmpFunc compare;
-} RedBlackTree;
+    RBMNode *root;
+    cmpFunc cmpKey;
+    destructKey dKey;
+} RedBlackMap;
 
 /**
  * Allocates memmory for and returns a pointer
- * to a new RedBlackTree
+ * to a new RedBlackMap
  * 
  * @param comparison function
- * @returns RedBlackTree*
+ * @returns RedBlackMap*
  **/
-extern RedBlackTree* newRedBlackTree(cmpFunc compare);
+extern RedBlackMap* newRedBlackMap(cmpFunc compare);
 
 /**
  * Inserts a new item into this redblack tree
  * 
- * @param tree the RedBlackTree
+ * @param tree the RedBlackMap
  * @param void *data the data
  **/
-extern void RBInsert(RedBlackTree *tree, void *data);
+extern void RBMPut(RedBlackMap *tree, void *key);
 
 /**
  * Deletes the given data from the tree
  * 
- * @param tree the RedBlackTree
+ * @param tree the RedBlackMap
  * @param data the data to delete 
  **/
-extern void RBDelete(RedBlackTree *tree, void *data);
+extern void RBMDelete(RedBlackMap *tree, void *key);
 
 /**
  * Searches for the given data in the tree
@@ -62,24 +65,28 @@ extern void RBDelete(RedBlackTree *tree, void *data);
  * @param data the data to search for
  * @returns void* ptr to the data if found, NULL otherwise
  **/
-extern void* RBSearch(RedBlackTree *tree, void *data);
+extern void* RBMSearch(RedBlackMap *tree, void *key);
+
+extern void RBMReplace(RedBlackMap *map, void *key, void *val);
+
+extern void RBMDestructKey(RedBlackMap *map, destructKey dKey);
 
 /**
- * Destructs the provided RedBlackTree, but
+ * Destructs the provided RedBlackMap, but
  * does not free the data contained within it.
  * 
  * @param *tree the tree to destroy
  **/
-extern void RBDestroy(RedBlackTree *tree);
+extern void RBMDestroy(RedBlackMap *tree);
 
 /**
- * Destructs the provided RedBlackTree and frees all
+ * Destructs the provided RedBlackMap and frees all
  * data provided to it using the provided deconstructor
  *
  * @param tree the tree to destroy
  * @param destructor a function which will be called on each
  * data item in the tree to destroy it
  **/
-extern void RBDestroyAndFree(RedBlackTree *tree, destruct destructor);
+extern void RBMDestroyAndFree(RedBlackMap *tree, destructVal destructVal);
 
 #endif
