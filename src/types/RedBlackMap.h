@@ -106,6 +106,6 @@ extern void RBMDestroy(RedBlackMap *map);
  * @param destructor a function which will be called on each
  * data item in the tree to destroy it
  **/
-extern void RBMDestroyAndFree(RedBlackMap *map, destructKey dKey, destructVal destructVal);
+extern void RBMDestroyAndFree(RedBlackMap *map, destructKey dKey, destructVal dVal);
 
 #endif

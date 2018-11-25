@@ -19,6 +19,9 @@ RBMNode* newRBMNode(void *key, void *val) {
     node->color = RED;
     node->kv->key = key;
     node->kv->val = val;
+    node->parent = NULL;
+    node->right = NULL;
+    node->left = NULL;
 
     return node;
 }

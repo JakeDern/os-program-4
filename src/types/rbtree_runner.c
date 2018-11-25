@@ -9,14 +9,17 @@ typedef int Integer;
 
 int main() {
     RedBlackMap *tree = newRedBlackMap((cmpFunc) &intCompare);
-    printf("Construct\n");
-    size_t s;
-    int *i = malloc(sizeof(int));
-    *i = 5;
-    printf("Int is %d\n", *i);
-    free(i);
+    int *key = malloc(sizeof(int));
+    *key = 5;
+    int *val = malloc(sizeof(int));
+    *val = 10;
+    RBMPut(tree, (void*) key, (void*) val);
 }
 
 int intCompare(void *int1, void *int2) {
     return *((int *) int1) - *((int *) int2); 
+}
+
+void RBMPrint(RedBlackMap *map) {
+  
 }

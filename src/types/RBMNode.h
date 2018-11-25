@@ -6,16 +6,16 @@
 enum COLOR {BLACK=0, RED=1};
 
 typedef struct KVPair {
-  void *key;
-  void *val;
+    void *key;
+    void *val;
 } KVPair;
 
 typedef struct RBMNode {
-  enum COLOR color;
-  KVPair *kv;
-  struct RBMNode *parent;
-  struct RBMNode *left;
-  struct RBMNode *right; 
+    enum COLOR color;
+    KVPair *kv;
+    struct RBMNode *parent;
+    struct RBMNode *left;
+    struct RBMNode *right; 
 } RBMNode;
 
 /**
