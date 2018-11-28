@@ -56,6 +56,7 @@ RedBlackMap* newRedBlackMap(cmpFunc compare) {
 
 /** @override */
 void RBMPut(RedBlackMap *map, void *key, void *val) {
+    printf("adding %d\n", *((int*)key));
     // Edge: this is first insertion
     if (map->root == NULL) {
         map->root = newRBMNode(key, val);
@@ -148,7 +149,7 @@ static void fixTree(RedBlackMap *map, RBMNode *n) {
 }
 
 static void doLeftLeft(RedBlackMap *map, RBMNode *n) {
-    printf("applying LeftLeft\n");
+    printf("applying LeftLeft to %d\n", *((int*)(n->kv->key)));
     RBMNode *g = gpOf(n);
     RBMNode *p = n->parent;
     rightRotate(map, g);
@@ -162,7 +163,7 @@ static void doLeftLeft(RedBlackMap *map, RBMNode *n) {
 }
 
 static void doRightRight(RedBlackMap *map, RBMNode *n) {
-    printf("applying RightRight\n");
+    printf("applying RightRight to %d\n", *((int*)(n->kv->key)));
     RBMNode *g = gpOf(n);
     RBMNode *p = n->parent;
     leftRotate(map, g);
@@ -176,7 +177,7 @@ static void doRightRight(RedBlackMap *map, RBMNode *n) {
 }
 
 static void doLeftRight(RedBlackMap *map, RBMNode *n) {
-    printf("applying LeftRight\n");
+    printf("applying LeftRight to %d\n", *((int*)(n->kv->key)));
     RBMNode *g = gpOf(n);
     RBMNode *p = n->parent;
     leftRotate(map, n->parent);
@@ -184,10 +185,10 @@ static void doLeftRight(RedBlackMap *map, RBMNode *n) {
 }
 
 static void doRightLeft(RedBlackMap *map, RBMNode *n) {
-    printf("applying RightLeft\n");
+    printf("applying RightLeft to %d\n", *((int*)(n->kv->key)));
     RBMNode *g = gpOf(n);
     RBMNode *p = n->parent;
-    rightRotate(map, n->parent);
+    rightRotate(map, p);
 
     printf("after right: ");
     RBMPrintInOrder(map);
@@ -196,6 +197,7 @@ static void doRightLeft(RedBlackMap *map, RBMNode *n) {
 }
 
 static void rightRotate(RedBlackMap *map, RBMNode *n) {
+    printf("right rotate on %d\n", *((int*)(n->kv->key)));
     RBMNode *p = n->left;
     RBMNode *pRight = p->right;
     RBMNode *x = n->left->left;
@@ -207,6 +209,7 @@ static void rightRotate(RedBlackMap *map, RBMNode *n) {
         } else {
             n->parent->left = p;
         }
+        p->parent = n->parent;
     } else {
         map->root = p;
     }
@@ -221,25 +224,29 @@ static void rightRotate(RedBlackMap *map, RBMNode *n) {
 }
 
 static void leftRotate(RedBlackMap *map, RBMNode *n) {
+    printf("left rotate on %d\n", *((int*)(n->kv->key)));
     RBMNode *u = n->left;
     RBMNode *p = n->right;
-    RBMNode *x = p->right->right;
+    RBMNode *x = n->right->right;
     RBMNode *pLeft = p->left;
 
     if (n->parent != NULL) {
+        // n is not root
         if (isRightChild(n)) {
             n->parent->right = p;
         } else {
             n->parent->left = p;
         }
+        p->parent = n->parent;
     } else {
         map->root = p;
     }
 
     n->right = pLeft;
     p->left = n;
+    
     n->parent = p;
-    // TODO set x parent
+    
 
     if (pLeft != NULL) {
         pLeft->parent = n; 
