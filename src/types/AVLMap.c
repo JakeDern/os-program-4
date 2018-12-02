@@ -95,6 +95,10 @@ void AVLPut(AVLMap *map, void *key, void *val) {
     map->root->parent = NULL;
 }
 
+/**
+ * Adjusts the tree so that AVL properties are maintained
+ * after an insertion
+ * */
 static void fixInsert(AVLMap *map, AVLNode *n) {
     printf("performing fix for %d\n", *((int*)(n->kv->key)));
     AVLNode *z = n;
@@ -130,6 +134,11 @@ static void fixInsert(AVLMap *map, AVLNode *n) {
     }
 }
 
+/**
+ * Calculates the balance factor of a node
+ * @returns 0 iff the node is NULL, height of the
+ * node otherwise
+ * */
 static int calcBalance(AVLNode *n) {
     if (n == NULL) {
         return 0;
@@ -138,6 +147,12 @@ static int calcBalance(AVLNode *n) {
     return calcHeight(n->left) - calcHeight(n->right);
 }
 
+/**
+ * Calculates the height of a particular
+ * node.
+ * @returns 0 iff the node is NULL, height of the node
+ * otherwise
+ * */
 static int calcHeight(AVLNode *n) {
     if (n == NULL) {
         return 0;
@@ -153,6 +168,11 @@ static int calcHeight(AVLNode *n) {
     }
 }
 
+/**
+ * Performs a right rotation on the given node
+ *
+ * @see https://en.wikipedia.org/wiki/Tree_rotation
+ * */
 static AVLNode* rightRotate(AVLMap *map, AVLNode *n) {
     printf("right rotate on %d\n", *((int*)(n->kv->key)));
     AVLNode *p = n->left;
@@ -182,6 +202,12 @@ static AVLNode* rightRotate(AVLMap *map, AVLNode *n) {
     return p;
 }
 
+/**
+ * Performs a left rotation on the subtree rooted
+ * at the given node
+ * 
+ * @see https://en.wikipedia.org/wiki/Tree_rotation
+ * */
 static AVLNode* leftRotate(AVLMap *map, AVLNode *n) {
     printf("left rotate on %d\n", *((int*)(n->kv->key)));
     AVLNode *u = n->left;
@@ -212,6 +238,13 @@ static AVLNode* leftRotate(AVLMap *map, AVLNode *n) {
     return p;
 }
 
+/**
+ * Determines if the given node is a left child
+ * 
+ * @returns -1 iff the node is null
+ *          0 iff the node is a right child
+ *          1 iff the node is a left child
+ * */
 static int isLeftChild(AVLNode *n) {
     if (n == NULL) {
         return -1;
@@ -224,6 +257,13 @@ static int isLeftChild(AVLNode *n) {
     return n->parent->left == n ? 1 : 0;
 }
 
+/**
+ * Determines if the given node is a left child
+ * 
+ * @returns -1 iff the node is null
+ *          1 iff the node is a right child
+ *          0 iff the node is a left child
+ * */
 static int isRightChild(AVLNode *n) {
     if (n == NULL) {
         return -1;
@@ -254,6 +294,10 @@ KVPair* AVLDelete(AVLMap *map, void *key) {
     return ret;
 }
 
+/**
+ * Recursively deletes the provided node from the tree and fixes the
+ * tree to maintain AVL properties as it does so
+ * */
 static AVLNode *deleteHelper(AVLMap *map, AVLNode *n, void *key) {
     printf("deleting %d\n", *((int*)key));
     if (n == NULL) {
@@ -314,6 +358,10 @@ static AVLNode *deleteHelper(AVLMap *map, AVLNode *n, void *key) {
     }
 }
 
+/**
+ * Gets the maximum node of the left subtree
+ * of the given node
+ * */
 static AVLNode* getLeftMaximum(AVLNode *n) {
     if (n == NULL || n->left == NULL) {
         return NULL;
@@ -327,6 +375,10 @@ static AVLNode* getLeftMaximum(AVLNode *n) {
     return curr;
 }
 
+/**
+ * Gets the maximum node of the right subtree
+ * of the given node
+ * */
 static AVLNode* getRightMinimum(AVLNode *n) {
     if (n == NULL) {
         return NULL;
@@ -350,6 +402,10 @@ void* AVLSearch(AVLMap *map, void *key) {
     return n == NULL ? NULL : n->kv->key;
 }
 
+/**
+ * Searches for and returns the node associated with the
+ * provided key in the tree if it exists
+ * */
 static AVLNode* searchNode(AVLMap *map, void *key) {
     printf("Looking for %d\n", *((int*)key));
     AVLNode *curr = map->root;
@@ -375,6 +431,10 @@ static AVLNode* searchNode(AVLMap *map, void *key) {
     }
 }
 
+/**
+ * Replaces the KVPair with the same key, but the
+ * new value in the tree
+ * */
 void* AVLReplace(AVLMap *map, void *key, void *val) {
     AVLNode *target = AVLSearch(map, key);
     if (target == NULL) {
