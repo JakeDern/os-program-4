@@ -376,7 +376,15 @@ static AVLNode* searchNode(AVLMap *map, void *key) {
 }
 
 void* AVLReplace(AVLMap *map, void *key, void *val) {
+    AVLNode *target = AVLSearch(map, key);
+    if (target == NULL) {
+        return NULL;
+    }
+    void* oldVal = target->kv->val;
+    AVLDelete(map, key);
+    AVLPut(map, key, val);
 
+    return oldVal;
 }
 
 /** @override */
