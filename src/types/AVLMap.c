@@ -4,12 +4,10 @@
 #include "./AVLNode.h"
 #include "./AVLMap.h"
 
-static int isLeftChild(AVLNode *n);
 static int isRightChild(AVLNode *n);
 static AVLNode* rightRotate(AVLMap *map, AVLNode *n);
 static AVLNode* leftRotate(AVLMap *map, AVLNode *n);
 static void printHelper(AVLNode *n);
-static AVLNode* getRightMinimum(AVLNode *n);
 static AVLNode* getLeftMaximum(AVLNode *n);
 static void fixInsert(AVLMap *map, AVLNode *n);
 static int calcBalance(AVLNode *n);
@@ -177,8 +175,7 @@ static AVLNode* rightRotate(AVLMap *map, AVLNode *n) {
     printf("right rotate on %d\n", *((int*)(n->kv->key)));
     AVLNode *p = n->left;
     AVLNode *pRight = p->right;
-    AVLNode *x = n->left->left;
-    AVLNode *u = n->right;
+
     if (n->parent != NULL) {
         // n is not root node
         if (isRightChild(n) == 1) {
@@ -210,9 +207,7 @@ static AVLNode* rightRotate(AVLMap *map, AVLNode *n) {
  * */
 static AVLNode* leftRotate(AVLMap *map, AVLNode *n) {
     printf("left rotate on %d\n", *((int*)(n->kv->key)));
-    AVLNode *u = n->left;
     AVLNode *p = n->right;
-    AVLNode *x = n->right->right;
     AVLNode *pLeft = p->left;
 
     if (n->parent != NULL) {
@@ -242,25 +237,6 @@ static AVLNode* leftRotate(AVLMap *map, AVLNode *n) {
  * Determines if the given node is a left child
  * 
  * @returns -1 iff the node is null
- *          0 iff the node is a right child
- *          1 iff the node is a left child
- * */
-static int isLeftChild(AVLNode *n) {
-    if (n == NULL) {
-        return -1;
-    }
-
-    if (n->parent == NULL) {
-        return -1;
-    }
-
-    return n->parent->left == n ? 1 : 0;
-}
-
-/**
- * Determines if the given node is a left child
- * 
- * @returns -1 iff the node is null
  *          1 iff the node is a right child
  *          0 iff the node is a left child
  * */
@@ -278,7 +254,6 @@ static int isRightChild(AVLNode *n) {
 
 /** @override */
 KVPair* AVLDelete(AVLMap *map, void *key) {
-    AVLNode *curr = map->root;
     printf("calling search\n");
     AVLNode *removed = searchNode(map, key);
 
@@ -370,27 +345,6 @@ static AVLNode* getLeftMaximum(AVLNode *n) {
     AVLNode *curr = n->left;
     while (curr->right != NULL) {
         curr = curr->right;
-    }
-
-    return curr;
-}
-
-/**
- * Gets the maximum node of the right subtree
- * of the given node
- * */
-static AVLNode* getRightMinimum(AVLNode *n) {
-    if (n == NULL) {
-        return NULL;
-    }
-    
-    if (n->right == NULL) {
-        return NULL;
-    }
-
-    AVLNode *curr = n->right;
-    while (curr->left != NULL) {
-        curr = curr->left;
     }
 
     return curr;
