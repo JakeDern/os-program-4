@@ -1,22 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "./RBMNode.h"
+#include "./AVLNode.h"
 
 /** @override */
-RBMNode* newRBMNode(void *key, void *val) {
-    RBMNode *node;
-    if ( (node = malloc(sizeof(RBMNode))) == NULL) {
-        printf("Failed to allocate memory for RBMNode\n");
+AVLNode* newAVLNode(void *key, void *val) {
+    AVLNode *node;
+    if ( (node = malloc(sizeof(AVLNode))) == NULL) {
+        printf("Failed to allocate memory for AVLNode\n");
         exit(1);
     }
 
     if ( (node->kv = malloc(sizeof(KVPair))) == NULL) {
-        printf("Failed to allocate memory for RBMNode");
+        printf("Failed to allocate memory for AVLNode");
         exit(1);
     }
 
-    node->color   = RED;
     node->kv->key = key;
     node->kv->val = val;
     node->parent  = NULL;

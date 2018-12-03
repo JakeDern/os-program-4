@@ -4,17 +4,17 @@ EXE = runner
 SCAN_BUILD_DIR = scan-build-out
 EXTRA_FLAGS = 
 
-all: RBMNode.o RedBlackMap.o rbtree_runner.o
-	$(CC) -o $(EXE) rbtree_runner.o RBMNode.o RedBlackMap.o $(EXTRA_FLAGS)
+all: AVLNode.o AVLMap.o avltree_runner.o
+	$(CC) -o $(EXE) avltree_runner.o AVLNode.o AVLMap.o $(EXTRA_FLAGS)
 
-rbtree_runner.o: rbtree_runner.c
-	$(CC) $(WARNING_FLAGS) -c rbtree_runner.c $(EXTRA_FLAGS)
+avltree_runner.o: avltree_runner.c
+	$(CC) $(WARNING_FLAGS) -c avltree_runner.c $(EXTRA_FLAGS)
 
-RBMNode.o: ./RBMNode.c ./RBMNode.h  
-	$(CC) $(WARNING_FLAGS) -c ./RBMNode.c $(EXTRA_FLAGS)
+AVLNode.o: ./AVLNode.c ./AVLNode.h  
+	$(CC) $(WARNING_FLAGS) -c ./AVLNode.c $(EXTRA_FLAGS)
 
-RedBlackMap.o: ./RedBlackMap.c ./RedBlackMap.h
-	$(CC) $(WARNING_FLAGS) -c ./RedBlackMap.c $(EXTRA_FLAGS)
+AVLMap.o: ./AVLMap.c ./AVLMap.h
+	$(CC) $(WARNING_FLAGS) -c ./AVLMap.c $(EXTRA_FLAGS)
 
 clean:
 	rm $(EXE) *.o

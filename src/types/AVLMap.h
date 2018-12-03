@@ -1,7 +1,7 @@
-#ifndef _RedBlackMap
-#define _RedBlackMap
+#ifndef _AVLMap
+#define _AVLMap
 
-#include "./RBMNode.h"
+#include "./AVLNode.h"
 
 /**
  * This function will provide an ordering for any keys
@@ -36,37 +36,37 @@ typedef void (*destructKey)(void*);
  **/
 typedef void (*destructVal)(void*);
 
-typedef struct RedBlackMap {
-    int size;
-    RBMNode *root;
+typedef struct AVLMap {
+    unsigned int size;
+    AVLNode *root;
     cmpFunc cmpKey;
-} RedBlackMap;
+} AVLMap;
 
 /**
  * Allocates memmory for and returns a pointer
- * to a new RedBlackMap
+ * to a new AVLMap
  * 
  * @param comparison function
- * @returns RedBlackMap*
+ * @returns AVLMap*
  **/
-extern RedBlackMap* newRedBlackMap(cmpFunc compare);
+extern AVLMap* newAVLMap(cmpFunc compare);
 
 /**
- * Inserts a new item into this redblack tree
+ * Inserts a new item into this AVL tree
  * 
- * @param tree the RedBlackMap
+ * @param tree the AVLMap
  * @param void *data the data
  **/
-extern void RBMPut(RedBlackMap *map, void *key, void *val);
+extern void AVLPut(AVLMap *map, void *key, void *val);
 
 /**
  * Deletes the given data from the tree
  * 
- * @param tree the RedBlackMap
+ * @param tree the AVLMap
  * @param data the data to delete
  * @returns KVPair* of the deleted data
  **/
-extern KVPair* RBMDelete(RedBlackMap *map, void *key);
+extern KVPair* AVLDelete(AVLMap *map, void *key);
 
 /**
  * Searches for the given data in the tree
@@ -75,7 +75,7 @@ extern KVPair* RBMDelete(RedBlackMap *map, void *key);
  * @param data the data to search for
  * @returns void* ptr to the data if found, NULL otherwise
  **/
-extern void* RBMSearch(RedBlackMap *map, void *key);
+extern void* AVLSearch(AVLMap *map, void *key);
 
 /**
  * Replaces the given key with the given value in the tree,
@@ -87,25 +87,25 @@ extern void* RBMSearch(RedBlackMap *map, void *key);
  * @returns pointer to the old value contained in the map or NULL
  * if the key was not found
  **/
-extern void* RBMReplace(RedBlackMap *map, void *key, void *val);
+extern void* AVLReplace(AVLMap *map, void *key, void *val);
 
 /**
- * Destructs the provided RedBlackMap, but
+ * Destructs the provided AVLMap, but
  * does not free the keys or values contained
  * within it
  * 
  * @param *tree the tree to destroy
  **/
-extern void RBMDestroy(RedBlackMap *map);
+extern void AVLDestroy(AVLMap *map);
 
 /**
- * Destructs the provided RedBlackMap and frees all
+ * Destructs the provided AVLMap and frees all
  * data provided to it using the provided deconstructors
  *
  * @param tree the tree to destroy
  * @param destructor a function which will be called on each
  * data item in the tree to destroy it
  **/
-extern void RBMDestroyAndFree(RedBlackMap *map, destructKey dKey, destructVal dVal);
+extern void AVLDestroyAndFree(AVLMap *map, destructKey dKey, destructVal dVal);
 
 #endif
