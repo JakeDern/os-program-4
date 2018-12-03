@@ -263,8 +263,17 @@ KVPair* AVLDelete(AVLMap *map, void *key) {
         return NULL;
     }
 
+    // special case of delete root as last item
+    if (map->root->left ==  NULL && map->root->right == NULL) {
+        KVPair *ret = map->root->kv;
+        free(map->root);
+        map->root = NULL;
+        return ret;
+    }
+
     KVPair *ret = removed->kv;
     map->root = deleteHelper(map, map->root, key);
+    map->size--;
     map->root->parent = NULL;
     return ret;
 }

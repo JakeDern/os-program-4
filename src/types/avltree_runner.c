@@ -55,6 +55,12 @@ int main() {
     AVLPrintInOrder(tree);
     AVLDelete(tree, key2);
     AVLPrintInOrder(tree);
+    AVLDelete(tree, key5);
+    AVLPrintInOrder(tree);
+    AVLDelete(tree, key6);
+    AVLPrintInOrder(tree);
+    AVLDelete(tree, key7);
+    //AVLPrintInOrder(tree);
 }
 
 int intCompare(void *int1, void *int2) {
