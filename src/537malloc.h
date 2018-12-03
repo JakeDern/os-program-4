@@ -3,9 +3,6 @@
 #include <stddef.h>
 #include "./types/RedBlackMap.h"
 
-static RedBlackMap *allocMap = newRedBlackMap(NULL);
-static RedBlackMap *freeMap = newRedBlackMap(NULL);
-
 void *malloc537(size_t size);
 
 void free537(void *ptr);
