@@ -168,12 +168,12 @@ AVLNode *findNodeBefore(void *ptr)
 
     while (curr != NULL)
     {
-        if (ptr == curr->kv->key)
+        if (compareKey((void *)ptr, curr->kv->key) == 0)
         {
             min = curr;
             return min;
         }
-        else if (ptr < curr->kv->key)
+        else if (compareKey((void *)ptr, curr->kv->key) > 0)
         {
             curr = curr->left;
         }
@@ -202,6 +202,5 @@ AVLNode *findNodeBefore(void *ptr)
             return min;
         }
     }
-    printf("shouldn't do this i hope\n");
     return NULL;
 }
