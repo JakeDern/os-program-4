@@ -146,16 +146,15 @@ void memcheck537(void *ptr, size_t size)
     }
     AVLNode *nodeBefore = findNodeBefore(ptr);
     unsigned int testVal = (unsigned int)ptr + (unsigned int)size;
-    printf("here\n");
+
     unsigned int memVal = 0;
     if (nodeBefore != NULL)
     {
-        memVal = (unsigned int)nodeBefore->kv->key + (unsigned int)*(size_t *)nodeBefore->kv->val;
+        memVal = (unsigned int)(nodeBefore->kv->key) + (unsigned int)*(size_t *)nodeBefore->kv->val;
     }
-    printf("here2\n");
     if (testVal > memVal)
     {
-        fprintf(stderr, "The memory block spanning from %u to %u is not fully included in any block allocated by malloc537.", (unsigned int)nodeBefore->kv->key, memVal);
+        fprintf(stderr, "The memory block spanning from %u to %u is not fully included in any block allocated by malloc537.", (unsigned int)(nodeBefore->kv->key), memVal);
         exit(-1);
     }
     return;
@@ -169,7 +168,7 @@ AVLNode *findNodeBefore(void *ptr)
 
     while (curr != NULL)
     {
-        if ((unsigned int)ptr < (unsigned int)curr->kv->key)
+        if (ptr < curr->kv->key)
         {
             curr = curr->left;
         }
