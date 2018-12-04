@@ -9,42 +9,51 @@ static void AVLPrintInOrder(AVLMap *map);
 
 typedef int Integer;
 
-// int main()
-// {
-//     AVLMap *tree = newAVLMap((cmpFunc)&intCompare);
-//     int *key = malloc(sizeof(int));
-//     int *key2 = malloc(sizeof(int));
-//     int *key3 = malloc(sizeof(int));
-//     int *key4 = malloc(sizeof(int));
-//     int *key5 = malloc(sizeof(int));
-//     int *key6 = malloc(sizeof(int));
-//     int *key7 = malloc(sizeof(int));
+int main()
+{
+    AVLMap *tree = newAVLMap((cmpFunc)&intCompare);
+    int *key = malloc(sizeof(int));
+    int *key2 = malloc(sizeof(int));
+    int *key3 = malloc(sizeof(int));
+    int *key4 = malloc(sizeof(int));
+    int *key5 = malloc(sizeof(int));
+    int *key6 = malloc(sizeof(int));
+    int *key7 = malloc(sizeof(int));
+    int *val = malloc(sizeof(int));
+    *val = 5;
+    *key = 1;
+    *key2 = 4;
+    *key3 = 5;
+    *key4 = 7;
+    *key5 = 10;
+    *key6 = 13;
+    *key7 = 12;
 
-//     *key = 1;
-//     *key2 = 4;
-//     *key3 = 5;
-//     *key4 = 7;
-//     *key5 = 10;
-//     *key6 = 13;
-//     *key7 = 12;
+    // AVLPut(tree, (void*)key, (void*)val);
+    // AVLPut(tree, (void*)key2, (void*)val);
+    // AVLPut(tree, (void*)key3, (void*)val);
+    // AVLPut(tree, (void*)key4, (void*)val);
+    // AVLPut(tree, (void*)key5, (void*)val);
+    // AVLPut(tree, (void*)key6, (void*)val);
+    // AVLPut(tree, (void*)key7, (void*)val);
 
-//     int *del = 17;
-//     AVLDelete(tree, key4);
-//     AVLPrintInOrder(tree);
-//     AVLDelete(tree, key3);
-//     AVLPrintInOrder(tree);
-//     AVLDelete(tree, key);
-//     AVLPrintInOrder(tree);
-//     AVLDelete(tree, key2);
-//     AVLPrintInOrder(tree);
-//     AVLDelete(tree, key5);
-//     AVLPrintInOrder(tree);
-//     AVLDelete(tree, key6);
-//     AVLPrintInOrder(tree);
-//     AVLDelete(tree, key7);
-//     //AVLPrintInOrder(tree);
-//     (unsigned int)*((size_t *)val);
-// }
+    //int *del = 17;
+    AVLDelete(tree, key4);
+    AVLPrintInOrder(tree);
+    AVLDelete(tree, key3);
+    AVLPrintInOrder(tree);
+    AVLDelete(tree, key);
+    AVLPrintInOrder(tree);
+    AVLDelete(tree, key2);
+    AVLPrintInOrder(tree);
+    AVLDelete(tree, key5);
+    AVLPrintInOrder(tree);
+    AVLDelete(tree, key6);
+    AVLPrintInOrder(tree);
+    AVLDelete(tree, key7);
+    //AVLPrintInOrder(tree);
+    //(unsigned int)*((size_t *)val);
+}
 
 int intCompare(void *int1, void *int2)
 {

@@ -16,6 +16,7 @@ AVLNode* newAVLNode(void *key, void *val) {
         exit(1);
     }
 
+    node->height  = 0;
     node->kv->key = key;
     node->kv->val = val;
     node->parent  = NULL;

@@ -13,12 +13,13 @@ static int calcBalance(AVLNode *n);
 static int calcHeight(AVLNode *n);
 static AVLNode *deleteHelper(AVLMap *map, AVLNode *n, void *key);
 static AVLNode *searchNode(AVLMap *map, void *key);
+static void updateHeight(AVLNode *n);
 
 static void AVLPrintInOrder(AVLMap *map)
 {
-    printf("start print: ");
+    //printf("start print: ");
     printHelper(map->root);
-    printf("\n");
+    //printf("\n");
 }
 
 static void printHelper(AVLNode *n)
@@ -26,7 +27,7 @@ static void printHelper(AVLNode *n)
     if (n != NULL)
     {
         printHelper(n->left);
-        printf("%d", *((int *)(n->kv->key)));
+        //printf("%d", *((int *)(n->kv->key)));
         if (n->parent != NULL)
         {
             printf("(p=%d) ", *((int *)(n->parent->kv->key)));
@@ -103,6 +104,12 @@ void AVLPut(AVLMap *map, void *key, void *val)
     else
     {
         prev->right = newNode;
+    }
+
+    curr = newNode;
+    while (curr != NULL) {
+        updateHeight(curr);
+        curr = curr->parent;
     }
 
     // initiate fixing;
@@ -189,17 +196,7 @@ static int calcHeight(AVLNode *n)
         return 0;
     }
 
-    int leftHeight = calcHeight(n->left);
-    int rightHeight = calcHeight(n->right);
-
-    if (leftHeight > rightHeight)
-    {
-        return 1 + leftHeight;
-    }
-    else
-    {
-        return 1 + rightHeight;
-    }
+    return n->height;
 }
 
 /**
@@ -240,7 +237,17 @@ static AVLNode *rightRotate(AVLMap *map, AVLNode *n)
         pRight->parent = n;
     }
 
+    updateHeight(n);
+    updateHeight(p);
+
     return p;
+}
+
+static void updateHeight(AVLNode *n) {
+    int rightH = calcHeight(n->right);
+    int leftH = calcHeight(n->left);
+    n->height = rightH > leftH ? rightH : leftH;
+    n->height++;
 }
 
 /**
@@ -281,6 +288,9 @@ static AVLNode *leftRotate(AVLMap *map, AVLNode *n)
     {
         pLeft->parent = n;
     }
+
+    updateHeight(n);
+    updateHeight(p);
 
     return p;
 }
@@ -342,7 +352,7 @@ KVPair *AVLDelete(AVLMap *map, void *key)
  * */
 static AVLNode *deleteHelper(AVLMap *map, AVLNode *n, void *key)
 {
-    printf("deleting %d\n", *((int *)key));
+    printf("deleting %d\n", (unsigned int)key);
     if (n == NULL)
     {
         return n;
@@ -389,6 +399,8 @@ static AVLNode *deleteHelper(AVLMap *map, AVLNode *n, void *key)
     {
         return n;
     }
+
+    updateHeight(n);
 
     int balance = calcBalance(n);
     if (balance > 1)

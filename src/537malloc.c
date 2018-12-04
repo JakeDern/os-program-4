@@ -153,7 +153,6 @@ void memcheck537(void *ptr, size_t size)
     }
     if (testVal > memVal)
     {
-        printf("memVal addition: %u\n", memVal);
         fprintf(stderr, "The memory block spanning from %u to %u is not fully included in any block allocated by malloc537.", (unsigned int)ptr, (unsigned int)ptr + (unsigned int)size);
         exit(-1);
     }
@@ -168,14 +167,12 @@ AVLNode *findNodeBefore(void *ptr)
 
     while (curr != NULL)
     {
-        printf("entering while: curr: %p, ptr: %p\n", curr->kv->key, ptr);
         if (compareKey(ptr, curr->kv->key) == 0)
         {
             return curr;
         }
         else if (compareKey(ptr, curr->kv->key) > 0)
         {
-            printf("entered greater than case\n");
             if (min == NULL)
             {
                 min = curr;
