@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "./AVLNode.h"
 #include "./AVLMap.h"
 
@@ -450,7 +449,7 @@ static AVLNode *getLeftMaximum(AVLNode *n)
 void *AVLSearch(AVLMap *map, void *key)
 {
     AVLNode *n = searchNode(map, key);
-    return n == NULL ? NULL : n->kv->key;
+    return n == NULL ? NULL : n->kv->val;
 }
 
 /**
