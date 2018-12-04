@@ -193,14 +193,5 @@ AVLNode *findNodeBefore(void *ptr)
             curr = curr->right;
         }
     }
-    if (min != NULL)
-    {
-        if ((unsigned int)ptr < ((unsigned int)min->kv->key + (unsigned int)*(size_t *)min->kv->val))
-        {
-            printf("returning from print overwrite with addr\n");
-            // %u as < %u\n", (unsigned int)min->kv->key, (unsigned int)ptr);
-            return min;
-        }
-    }
-    return NULL;
+    return min;
 }
