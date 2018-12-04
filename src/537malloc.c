@@ -9,13 +9,13 @@ static RedBlackMap *freeMap;
 
 int freeOverwrite(void *ptr);
 void init537Malloc();
-int compareKey(unsigned int a, unsigned int b);
+int compareKey(void *a, void *b);
 
-int compareKey(unsigned int a, unsigned int b)
+int compareKey(void *a, void *b)
 {
     if (a > b)
     {
-        return 1;
+        return -1;
     }
     else if (a == b)
     {
@@ -23,14 +23,20 @@ int compareKey(unsigned int a, unsigned int b)
     }
     else
     {
-        return -1;
+        return 1;
     }
 }
 
 void init537Malloc()
 {
+<<<<<<< Updated upstream
     RedBlackMap *allocMap = newAVLMap((cmpFunc *)&compareKey);
     RedBlackMap *freeMap = newAVLMap((cmpFunc *)&compareKey);
+=======
+    allocMap = newAVLMap((cmpFunc)&compareKey);
+    freeMap = newAVLMap((cmpFunc)&compareKey);
+    init = 1;
+>>>>>>> Stashed changes
 }
 
 void *malloc537(size_t size)
@@ -38,23 +44,25 @@ void *malloc537(size_t size)
     if (init == 0)
     {
         init537Malloc();
-        init = 1;
     }
     if (size == 0)
     {
-        fprintf(stderr, "Warning: malloc of size 0");
+        fprintf(stderr, "Warning: malloc of size 0\n");
     }
     void *returnPtr;
     if ((returnPtr = malloc(size)) == NULL)
     {
-        fprinf(stderr, "Failed to malloc block of size %zu\n", size);
+        fprintf(stderr, "Failed to malloc block of size %u\n", (unsigned int)size);
         return NULL;
     }
-    AVLPut(allocMap, (void *)returnPtr, (void *)size);
+    size_t *tempPtr = malloc(sizeof(size_t));
+    *tempPtr = size;
+
+    AVLPut(allocMap, (void *)returnPtr, (void *)tempPtr);
     if (!(AVLSearch(freeMap, returnPtr) == NULL))
     {
         KVPair *temp;
-        if ((temp = ((KVPair *)AVLDelete(freeMap, returnPtr)) != NULL))
+        if (((temp = (AVLDelete(freeMap, returnPtr))) != NULL))
         {
             free(temp->key);
         }
@@ -67,7 +75,6 @@ void free537(void *ptr)
     if (init == 0)
     {
         init537Malloc();
-        init = 1;
     }
     if ((AVLSearch(allocMap, ptr) == NULL))
     {
@@ -99,7 +106,6 @@ void *realloc537(void *ptr, size_t size)
     if (init == 0)
     {
         init537Malloc();
-        init = 1;
     }
     if (ptr == NULL)
     {
@@ -116,8 +122,10 @@ void *realloc537(void *ptr, size_t size)
         free(temp->key);
         free(temp->val);
     }
-    ptr = realloc(ptr, size);
-    AVLPut(allocMap, ptr, size);
+    realloc(ptr, size);
+    size_t *ptr1 = malloc(sizeof(size_t));
+    *ptr1 = size;
+    AVLPut(allocMap, ptr, (void *)ptr1);
 
     return ptr;
 }
@@ -127,15 +135,22 @@ void memcheck537(void *ptr, size_t size)
     if (init == 0)
     {
         init537Malloc();
-        init = 1;
     }
-    int memBlockStart = freeOverwrite(ptr);
-    AVLNode *keyBlock = (AVLNode *)AVLSearch(allocMap, memBlockStart);
-    if (((unsigned int)ptr + (unsigned int)size > (unsigned int)keyBlock->kv->key + (unsigned int)keyBlock->kv->val) || memBlockStart == 0)
+    int *memBlockStart = malloc(sizeof(int));
+    *memBlockStart = freeOverwrite(ptr);
+    printf("retrieved memblockstart %d\n", *memBlockStart);
+    size_t *keyVal = (size_t *)AVLSearch(allocMap, (void *)memBlockStart);
+    printf("retrieved keyblock, issue is with the below print statement\n");
+    unsigned int testVal = (unsigned int)ptr + (unsigned int)size;
+    printf("here\n");
+    unsigned int memVal = (unsigned int)*memBlockStart + (unsigned int)*keyVal;
+    printf("here2\n");
+    if (testVal > memVal || memBlockStart == 0)
     {
         fprintf(stderr, "The memory block spanning from %u to %u is not fully included in any block allocated by malloc537.", (unsigned int)keyBlock->kv->key, (unsigned int)keyBlock->kv->key + (unsigned int)keyBlock->kv->val);
         exit(-1);
     }
+    free(memBlockStart);
 
     return;
 }
@@ -172,6 +187,7 @@ int freeOverwrite(void *ptr)
     {
         if ((unsigned int)ptr < ((unsigned int)min->kv->key + (unsigned int)min->kv->val))
         {
+            printf("returning from print overwrite with addr %u as < %u\n", (unsigned int)min->kv->key, (unsigned int)ptr);
             return (unsigned int)min->kv->key;
         }
     }
