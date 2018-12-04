@@ -15,7 +15,7 @@ int compareKey(void *a, void *b)
 {
     if (a > b)
     {
-        return -1;
+        return 1;
     }
     else if (a == b)
     {
@@ -23,7 +23,7 @@ int compareKey(void *a, void *b)
     }
     else
     {
-        return 1;
+        return -1;
     }
 }
 
@@ -144,22 +144,17 @@ void memcheck537(void *ptr, size_t size)
     {
         init537Malloc();
     }
-    printf("it's find node before\n");
     AVLNode *nodeBefore = findNodeBefore(ptr);
-    printf("jk it's not, maybe it's testval addition\n");
     unsigned int testVal = (unsigned int)ptr + (unsigned int)size;
-    printf("nope, chuck testa\n");
     unsigned int memVal = 0;
     if (nodeBefore != NULL)
     {
-        printf("it's the memVal addition\n");
         memVal = (unsigned int)(nodeBefore->kv->key) + (unsigned int)*(size_t *)nodeBefore->kv->val;
-        printf("it's not the addition\n");
     }
     if (testVal > memVal)
     {
-        printf("it's the print statement\n");
-        fprintf(stderr, "The memory block spanning from %u to %u is not fully included in any block allocated by malloc537.", (unsigned int)(nodeBefore->kv->key), memVal);
+        printf("memVal addition: %u\n", memVal);
+        fprintf(stderr, "The memory block spanning from %u to %u is not fully included in any block allocated by malloc537.", (unsigned int)ptr, (unsigned int)ptr + (unsigned int)size);
         exit(-1);
     }
     return;
@@ -173,29 +168,27 @@ AVLNode *findNodeBefore(void *ptr)
 
     while (curr != NULL)
     {
-        if (compareKey((void *)ptr, curr->kv->key) == 0)
+        printf("entering while: curr: %p, ptr: %p\n", curr->kv->key, ptr);
+        if (compareKey(ptr, curr->kv->key) == 0)
         {
-            min = curr;
-            return min;
+            return curr;
         }
-        else if (compareKey((void *)ptr, curr->kv->key) > 0)
+        else if (compareKey(ptr, curr->kv->key) > 0)
         {
-            curr = curr->left;
-        }
-        else
-        {
+            printf("entered greater than case\n");
             if (min == NULL)
             {
                 min = curr;
             }
-            else
+            else if (compareKey(min->kv->key, curr->kv->key) < 0)
             {
-                if (min->kv->key > curr->kv->key)
-                {
-                    min = curr;
-                }
+                min = curr;
             }
             curr = curr->right;
+        }
+        else
+        {
+            curr = curr->left;
         }
     }
     return min;
