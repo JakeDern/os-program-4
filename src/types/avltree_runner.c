@@ -61,6 +61,7 @@ int main() {
     AVLPrintInOrder(tree);
     AVLDelete(tree, key7);
     //AVLPrintInOrder(tree);
+    (unsigned int)*((size_t *)val);
 }
 
 int intCompare(void *int1, void *int2) {
@@ -85,4 +86,3 @@ static void printHelper(AVLNode *n) {
         printHelper(n->right);
     }
 }
-

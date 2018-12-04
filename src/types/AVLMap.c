@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "./AVLNode.h"
 #include "./AVLMap.h"
 
@@ -12,7 +11,7 @@ static AVLNode* getLeftMaximum(AVLNode *n);
 static void fixInsert(AVLMap *map, AVLNode *n);
 static int calcBalance(AVLNode *n);
 static int calcHeight(AVLNode *n);
-static AVLNode *deleteHelper(AVLMap *map, AVLNode *n, void *key);
+static AVLNode* deleteHelper(AVLMap *map, AVLNode *n, void *key);
 static AVLNode* searchNode(AVLMap *map, void *key);
 
 static void AVLPrintInOrder(AVLMap *map) {
@@ -362,7 +361,7 @@ static AVLNode* getLeftMaximum(AVLNode *n) {
 /** @override */
 void* AVLSearch(AVLMap *map, void *key) {
     AVLNode *n = searchNode(map, key);
-    return n == NULL ? NULL : n->kv->key;
+    return n == NULL ? NULL : n->kv->val;
 }
 
 /**
