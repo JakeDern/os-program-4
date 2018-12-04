@@ -4,11 +4,11 @@ EXE = runner
 SCAN_BUILD_DIR = scan-build-out
 EXTRA_FLAGS = 
 
-all: AVLNode.o AVLMap.o avltree_runner.o simple_testcase1.o 537malloc.o
-	$(CC) -o $(EXE) avltree_runner.o AVLNode.o AVLMap.o 537malloc.o simple_testcase1.o $(EXTRA_FLAGS)
+all: AVLNode.o AVLMap.o avltree_runner.o advanced_testcase1.o 537malloc.o
+	$(CC) -o $(EXE) avltree_runner.o AVLNode.o AVLMap.o 537malloc.o advanced_testcase1.o $(EXTRA_FLAGS)
 
-simple_testcase1.o: ./simple_testcase1.c
-	$(CC) $(WARNING_FLAGS) -c ./simple_testcase1.c $(EXTRA_FLAGS)
+advanced_testcase1.o: ./advanced_testcase1.c
+	$(CC) $(WARNING_FLAGS) -c ./advanced_testcase1.c $(EXTRA_FLAGS)
 
 537malloc.o: ./537malloc.c ./537malloc.h
 	$(CC) $(WARNING_FLAGS) -c ./537malloc.c $(EXTRA_FLAGS)
