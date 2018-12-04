@@ -185,7 +185,7 @@ AVLNode *findNodeBefore(void *ptr)
             }
             else
             {
-                if ((unsigned int)min->kv->key > (unsigned int)curr->kv->key)
+                if (min->kv->key > curr->kv->key)
                 {
                     min = curr;
                 }
@@ -195,11 +195,13 @@ AVLNode *findNodeBefore(void *ptr)
     }
     if (min != NULL)
     {
-        if ((unsigned int)ptr < ((unsigned int)min->kv->key + (unsigned int)min->kv->val))
+        if ((unsigned int)ptr < ((unsigned int)min->kv->key + (unsigned int)*(size_t *)min->kv->val))
         {
-            printf("returning from print overwrite with addr %u as < %u\n", (unsigned int)min->kv->key, (unsigned int)ptr);
+            printf("returning from print overwrite with addr\n");
+            // %u as < %u\n", (unsigned int)min->kv->key, (unsigned int)ptr);
             return min;
         }
     }
+    printf("shouldn't do this i hope\n");
     return NULL;
 }
