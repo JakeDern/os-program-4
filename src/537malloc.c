@@ -144,16 +144,21 @@ void memcheck537(void *ptr, size_t size)
     {
         init537Malloc();
     }
+    printf("it's find node before\n");
     AVLNode *nodeBefore = findNodeBefore(ptr);
+    printf("jk it's not, maybe it's testval addition\n");
     unsigned int testVal = (unsigned int)ptr + (unsigned int)size;
-
+    printf("nope, chuck testa\n");
     unsigned int memVal = 0;
     if (nodeBefore != NULL)
     {
+        printf("it's the memVal addition\n");
         memVal = (unsigned int)(nodeBefore->kv->key) + (unsigned int)*(size_t *)nodeBefore->kv->val;
+        printf("it's not the addition\n");
     }
     if (testVal > memVal)
     {
+        printf("it's the print statement\n");
         fprintf(stderr, "The memory block spanning from %u to %u is not fully included in any block allocated by malloc537.", (unsigned int)(nodeBefore->kv->key), memVal);
         exit(-1);
     }
