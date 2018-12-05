@@ -2,7 +2,7 @@ CC = gcc
 WARNING_FLAGS = -Wall -Wextra
 EXE = runner
 SCAN_BUILD_DIR = scan-build-out
-EXTRA_FLAGS = 
+EXTRA_FLAGS = -g
 
 all: AVLNode.o AVLMap.o avltree_runner.o
 	$(CC) -o $(EXE) avltree_runner.o AVLNode.o AVLMap.o $(EXTRA_FLAGS)

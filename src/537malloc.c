@@ -4,20 +4,22 @@
 #include <stdlib.h>
 
 static int init = 0;
-static RedBlackMap *allocMap;
-static RedBlackMap *freeMap;
+static AVLMap *allocMap;
+static AVLMap *freeMap;
 
-int freeOverwrite(void *ptr);
+AVLNode *findNodeBefore(void *ptr);
 void init537Malloc();
-int compareKey(unsigned int a, unsigned int b);
+int compareKey(void *a, void *b);
 
-int compareKey(unsigned int a, unsigned int b)
+int compareKey(void *a, void *b)
 {
-    if (a > b)
+    unsigned int aVal = (unsigned int) a;
+    unsigned int bVal = (unsigned int) b;
+    if (aVal > bVal)
     {
         return 1;
     }
-    else if (a == b)
+    else if (aVal == bVal)
     {
         return 0;
     }
@@ -29,8 +31,9 @@ int compareKey(unsigned int a, unsigned int b)
 
 void init537Malloc()
 {
-    RedBlackMap *allocMap = newAVLMap((cmpFunc *)&compareKey);
-    RedBlackMap *freeMap = newAVLMap((cmpFunc *)&compareKey);
+    allocMap = newAVLMap((cmpFunc)&compareKey);
+    freeMap = newAVLMap((cmpFunc)&compareKey);
+    init = 1;
 }
 
 void *malloc537(size_t size)
@@ -38,23 +41,25 @@ void *malloc537(size_t size)
     if (init == 0)
     {
         init537Malloc();
-        init = 1;
     }
     if (size == 0)
     {
-        fprintf(stderr, "Warning: malloc of size 0");
+        fprintf(stderr, "Warning: malloc of size 0\n");
     }
     void *returnPtr;
     if ((returnPtr = malloc(size)) == NULL)
     {
-        fprinf(stderr, "Failed to malloc block of size %zu\n", size);
+        fprintf(stderr, "Failed to malloc block of size %u\n", (unsigned int)size);
         return NULL;
     }
-    AVLPut(allocMap, (void *)returnPtr, (void *)size);
+    size_t *tempPtr = malloc(sizeof(size_t));
+    *tempPtr = size;
+
+    AVLPut(allocMap, (void *)returnPtr, (void *)tempPtr);
     if (!(AVLSearch(freeMap, returnPtr) == NULL))
     {
         KVPair *temp;
-        if ((temp = ((KVPair *)AVLDelete(freeMap, returnPtr)) != NULL))
+        if (((temp = (AVLDelete(freeMap, returnPtr))) != NULL))
         {
             free(temp->key);
         }
@@ -67,29 +72,43 @@ void free537(void *ptr)
     if (init == 0)
     {
         init537Malloc();
-        init = 1;
     }
     if ((AVLSearch(allocMap, ptr) == NULL))
     {
-        if (freeOverwrite(ptr))
+        //TODO: Fix this with new specs
+        AVLNode *temp;
+        if ((temp = findNodeBefore(ptr)) != NULL)
         {
-            fprintf(stderr, "Attempt to clear memory in another block");
-            exit(1);
+            printf("found node before\n");
+            unsigned int tempVal = (unsigned int)temp->kv->key + (unsigned int)*(size_t *)(temp->kv->val);
+            if (tempVal > (unsigned int)ptr)
+            {
+                fprintf(stderr, "Attempt to clear memory in another block");
+                exit(-1);
+            }
+            fprintf(stderr, "Attempt to clear unallocated memory");
+            exit(-1);
         }
-        fprintf(stderr, "Attempt to clear unallocated memory");
-        exit(1);
-    }
-    if (!(AVLSearch(freeMap, ptr) == NULL))
-    {
-        fprintf(stderr, "Double free");
-        exit(1);
+        printf("About to check freemap for item\n");
+        if ((AVLSearch(freeMap, (void *)ptr) != NULL))
+        {
+            fprintf(stderr, "Double free");
+            exit(-1);
+        }
+        else
+        {
+            fprintf(stderr, "Attempt to clear unallocated memory");
+            exit(-1);
+        }
     }
 
-    KVPair *temp = (KVPair *)AVLDelete(allocMap, ptr);
-    free(temp->key);
-    free(temp->val);
-    AVLPut(freeMap, ptr, NULL);
-    free(ptr);
+    unsigned int *oldPtr = malloc(sizeof(unsigned int));
+    *oldPtr = (unsigned int) ptr;
+    KVPair *temp1 = (KVPair *)AVLDelete(allocMap, ptr);
+    free(temp1->key);
+    //free(temp1->val);
+    AVLPut(freeMap, (void *)oldPtr, (void *)oldPtr);
+    //free(ptr);
 
     return;
 }
@@ -99,7 +118,6 @@ void *realloc537(void *ptr, size_t size)
     if (init == 0)
     {
         init537Malloc();
-        init = 1;
     }
     if (ptr == NULL)
     {
@@ -116,8 +134,10 @@ void *realloc537(void *ptr, size_t size)
         free(temp->key);
         free(temp->val);
     }
-    ptr = realloc(ptr, size);
-    AVLPut(allocMap, ptr, size);
+    realloc(ptr, size);
+    size_t *ptr1 = malloc(sizeof(size_t));
+    *ptr1 = size;
+    AVLPut(allocMap, ptr, (void *)ptr1);
 
     return ptr;
 }
@@ -127,20 +147,23 @@ void memcheck537(void *ptr, size_t size)
     if (init == 0)
     {
         init537Malloc();
-        init = 1;
     }
-    int memBlockStart = freeOverwrite(ptr);
-    AVLNode *keyBlock = (AVLNode *)AVLSearch(allocMap, memBlockStart);
-    if (((unsigned int)ptr + (unsigned int)size > (unsigned int)keyBlock->kv->key + (unsigned int)keyBlock->kv->val) || memBlockStart == 0)
+    AVLNode *nodeBefore = findNodeBefore(ptr);
+    unsigned int testVal = (unsigned int)ptr + (unsigned int)size;
+    unsigned int memVal = 0;
+    if (nodeBefore != NULL)
     {
-        fprintf(stderr, "The memory block spanning from %u to %u is not fully included in any block allocated by malloc537.", (unsigned int)keyBlock->kv->key, (unsigned int)keyBlock->kv->key + (unsigned int)keyBlock->kv->val);
+        memVal = (unsigned int)(nodeBefore->kv->key) + (unsigned int)*(size_t *)nodeBefore->kv->val;
+    }
+    if (testVal > memVal)
+    {
+        fprintf(stderr, "The memory block spanning from %u to %u is not fully included in any block allocated by malloc537.", (unsigned int)ptr, (unsigned int)ptr + (unsigned int)size);
         exit(-1);
     }
-
     return;
 }
 
-int freeOverwrite(void *ptr)
+AVLNode *findNodeBefore(void *ptr)
 {
 
     AVLNode *curr = allocMap->root;
@@ -148,32 +171,26 @@ int freeOverwrite(void *ptr)
 
     while (curr != NULL)
     {
-        if ((unsigned int)ptr < (unsigned int)curr->kv->key)
+        if (compareKey(ptr, curr->kv->key) == 0)
         {
-            curr = curr->left;
+            return curr;
         }
-        else
+        else if (compareKey(ptr, curr->kv->key) > 0)
         {
             if (min == NULL)
             {
                 min = curr;
             }
-            else
+            else if (compareKey(min->kv->key, curr->kv->key) < 0)
             {
-                if ((unsigned int)min->kv->key > (unsigned int)curr->kv->key)
-                {
-                    min = curr;
-                }
+                min = curr;
             }
             curr = curr->right;
         }
-    }
-    if (min != NULL)
-    {
-        if ((unsigned int)ptr < ((unsigned int)min->kv->key + (unsigned int)min->kv->val))
+        else
         {
-            return (unsigned int)min->kv->key;
+            curr = curr->left;
         }
     }
-    return 0;
+    return min;
 }

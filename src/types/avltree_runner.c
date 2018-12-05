@@ -9,8 +9,9 @@ static void AVLPrintInOrder(AVLMap *map);
 
 typedef int Integer;
 
-int main() {
-    AVLMap *tree = newAVLMap((cmpFunc) &intCompare);
+int main()
+{
+    AVLMap *tree = newAVLMap((cmpFunc)&intCompare);
     int *key = malloc(sizeof(int));
     int *key2 = malloc(sizeof(int));
     int *key3 = malloc(sizeof(int));
@@ -18,7 +19,8 @@ int main() {
     int *key5 = malloc(sizeof(int));
     int *key6 = malloc(sizeof(int));
     int *key7 = malloc(sizeof(int));
-    
+    int *val = malloc(sizeof(int));
+    *val = 5;
     *key = 1;
     *key2 = 4;
     *key3 = 5;
@@ -26,27 +28,16 @@ int main() {
     *key5 = 10;
     *key6 = 13;
     *key7 = 12;
-    
-    int *val = malloc(sizeof(int));
-    *val = 10;
 
-    AVLPut(tree, (void*) key, (void*) val);
-    AVLPrintInOrder(tree);
-    AVLPut(tree, (void*) key2, (void*) val);
-    AVLPrintInOrder(tree);
-    AVLPut(tree, (void*) key3, (void*) val);
-    AVLPrintInOrder(tree);
-    AVLPut(tree, (void*) key4, (void*) val);
-    AVLPrintInOrder(tree);
-    AVLPut(tree, (void*) key5, (void*) val);
-    AVLPrintInOrder(tree);
-    AVLPut(tree, (void*) key6, (void*) val);
-    AVLPrintInOrder(tree);
-    AVLPut(tree, (void*) key7, (void*) val);
-    AVLPrintInOrder(tree);
+    AVLPut(tree, (void*)key, (void*)val);
+    AVLPut(tree, (void*)key2, (void*)val);
+    AVLPut(tree, (void*)key3, (void*)val);
+    AVLPut(tree, (void*)key4, (void*)val);
+    AVLPut(tree, (void*)key5, (void*)val);
+    AVLPut(tree, (void*)key6, (void*)val);
+    AVLPut(tree, (void*)key7, (void*)val);
 
-    // delete 7
-    int *del = 17;
+    //int *del = 17;
     AVLDelete(tree, key4);
     AVLPrintInOrder(tree);
     AVLDelete(tree, key3);
@@ -61,26 +52,33 @@ int main() {
     AVLPrintInOrder(tree);
     AVLDelete(tree, key7);
     //AVLPrintInOrder(tree);
-    (unsigned int)*((size_t *)val);
+    //(unsigned int)*((size_t *)val);
 }
 
-int intCompare(void *int1, void *int2) {
-    return *((int *) int1) - *((int *) int2); 
+int intCompare(void *int1, void *int2)
+{
+    return *((int *)int1) - *((int *)int2);
 }
 
-static void AVLPrintInOrder(AVLMap *map) {
-    printf("ROOT is %d: ", *((int*)(map->root->kv->key)));
+static void AVLPrintInOrder(AVLMap *map)
+{
+    printf("ROOT is %d: ", *((int *)(map->root->kv->key)));
     printHelper(map->root);
     printf("\n");
 }
 
-static void printHelper(AVLNode *n) {
-    if (n != NULL) {
+static void printHelper(AVLNode *n)
+{
+    if (n != NULL)
+    {
         printHelper(n->left);
-        printf("%d", *((int*)(n->kv->key)));
-        if (n->parent != NULL) {
-            printf("(p=%d) ", *((int*)(n->parent->kv->key)));
-        } else {
+        printf("%d", *((int *)(n->kv->key)));
+        if (n->parent != NULL)
+        {
+            printf("(p=%d) ", *((int *)(n->parent->kv->key)));
+        }
+        else
+        {
             printf("(p=null) ");
         }
         printHelper(n->right);

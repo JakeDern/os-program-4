@@ -9,6 +9,7 @@ typedef struct KVPair {
 } KVPair;
 
 typedef struct AVLNode {
+    int height;
     KVPair *kv;
     struct AVLNode *parent;
     struct AVLNode *left;

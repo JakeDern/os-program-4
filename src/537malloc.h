@@ -1,7 +1,7 @@
 #ifndef _537MALLOC
 #define _537MALLOC
 #include <stddef.h>
-#include "./types/RedBlackMap.h"
+#include "./types/AVLMap.h"
 
 void *malloc537(size_t size);
 
