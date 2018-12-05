@@ -131,8 +131,8 @@ void *realloc537(void *ptr, size_t size)
     if (AVLSearch(allocMap, ptr) != NULL)
     {
         KVPair *temp = (KVPair *)AVLDelete(allocMap, ptr);
-        free(temp->key);
         free(temp->val);
+        free(temp);
     }
     realloc(ptr, size);
     size_t *ptr1 = malloc(sizeof(size_t));
