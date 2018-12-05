@@ -61,7 +61,8 @@ void *malloc537(size_t size)
         KVPair *temp;
         if (((temp = (AVLDelete(freeMap, returnPtr))) != NULL))
         {
-            free(temp->key);
+            free(temp->val);
+            free(temp);
         }
     }
     return returnPtr;
@@ -104,7 +105,6 @@ void free537(void *ptr)
     unsigned int *oldPtr = malloc(sizeof(unsigned int));
     *oldPtr = (unsigned int)ptr;
     KVPair *temp1 = (KVPair *)AVLDelete(allocMap, ptr);
-    //free(temp1->key);
     free(temp1->val);
     free(temp1);
     AVLPut(freeMap, (void *)ptr, (void *)oldPtr);
