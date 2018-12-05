@@ -10,7 +10,9 @@ all: AVLNode.o AVLMap.o advanced_testcase2.o 537malloc.o
 advanced_testcase2.o: ./advanced_testcase2.c
 	$(CC) $(WARNING_FLAGS) -c ./advanced_testcase2.c $(EXTRA_FLAGS)
 
-537malloc.o: ./537malloc.c ./537malloc.h
+obj: 537malloc.o AVLNode.o AVLMap.o
+
+537malloc.o: ./537malloc.c ./537malloc.h ./types/AVLMap.h
 	$(CC) $(WARNING_FLAGS) -c ./537malloc.c $(EXTRA_FLAGS)
 
 AVLNode.o: ./types/AVLNode.c ./types/AVLNode.h  
