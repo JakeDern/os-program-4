@@ -1,3 +1,7 @@
+/**
+ * @author Jake Dern netid: dern2 cslogin: dern
+ * @author Alex Dallman netid: adallman2 cslogin: adallman
+ */
 #ifndef _537MALLOC
 #define _537MALLOC
 #include <stddef.h>
