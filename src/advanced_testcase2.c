@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include "537malloc.h"
 
-#define LIMIT 100000
-#define SIZE_RANGE 10000
+#define LIMIT 10//000
+#define SIZE_RANGE 10//00
 
 int mem_size[LIMIT];
 int *addr[LIMIT] = {NULL};

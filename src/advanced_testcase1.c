@@ -3,7 +3,7 @@
 #include "537malloc.h"
 #include <time.h>
 
-#define LIMIT 1000
+#define LIMIT 100000
 #define SIZE 1
 
 char *ptr[LIMIT];
@@ -18,10 +18,10 @@ int main() {
 	clock_t endTimeAlloc = clock();
 
 	clock_t startTimeMemCheck = clock();
-	// for(i = 0; i < LIMIT; i++) {
-	// 	printf("Mem check : %p\n", ptr[i]);
-	// 	memcheck537(ptr[i], 1);
-	// }
+	for(i = 0; i < LIMIT; i++) {
+		printf("Mem check : %p\n", ptr[i]);
+		memcheck537(ptr[i], 1);
+	}
 	clock_t endTimeMemCheck = clock();
 
 	clock_t startTimeFree = clock();

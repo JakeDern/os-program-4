@@ -29,13 +29,13 @@ int main()
     *key6 = 13;
     *key7 = 12;
 
-    // AVLPut(tree, (void*)key, (void*)val);
-    // AVLPut(tree, (void*)key2, (void*)val);
-    // AVLPut(tree, (void*)key3, (void*)val);
-    // AVLPut(tree, (void*)key4, (void*)val);
-    // AVLPut(tree, (void*)key5, (void*)val);
-    // AVLPut(tree, (void*)key6, (void*)val);
-    // AVLPut(tree, (void*)key7, (void*)val);
+    AVLPut(tree, (void*)key, (void*)val);
+    AVLPut(tree, (void*)key2, (void*)val);
+    AVLPut(tree, (void*)key3, (void*)val);
+    AVLPut(tree, (void*)key4, (void*)val);
+    AVLPut(tree, (void*)key5, (void*)val);
+    AVLPut(tree, (void*)key6, (void*)val);
+    AVLPut(tree, (void*)key7, (void*)val);
 
     //int *del = 17;
     AVLDelete(tree, key4);
