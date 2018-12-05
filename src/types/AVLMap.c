@@ -66,16 +66,10 @@ AVLMap *newAVLMap(cmpFunc compare)
 /** @override */
 void AVLPut(AVLMap *map, void *key, void *val)
 {
-    printf("Tree before inserting (%p, %d): ", key, *((int *) val));
-    AVLPrintInOrder(map);
-    // printf("adding %d\n", *((int *)key));
-    // Edge: this is first insertion
     if (map->root == NULL)
     {
         map->root = newAVLNode(key, val);
         map->size = 1;
-        printf("Tree after inserting (%p, %d): ", key, *((int *) val));
-        AVLPrintInOrder(map);
         return;
     }
 
@@ -118,6 +112,7 @@ void AVLPut(AVLMap *map, void *key, void *val)
         prev->right = newNode;
     }
 
+    map->root->parent == NULL;
     curr = newNode;
     while (curr != NULL) {
         updateHeight(curr);
@@ -127,8 +122,6 @@ void AVLPut(AVLMap *map, void *key, void *val)
     // initiate fixing;
     fixInsert(map, newNode);
     map->root->parent = NULL;
-    printf("Tree after inserting (%p, %d): ", key, *((int *) val));
-    AVLPrintInOrder(map);
 }
 
 /**
@@ -137,7 +130,6 @@ void AVLPut(AVLMap *map, void *key, void *val)
  * */
 static void fixInsert(AVLMap *map, AVLNode *n)
 {
-    // printf("performing fix for %d\n", *((int *)(n->kv->key)));
     AVLNode *z = n;
     int balance = 0;
     while ((balance = calcBalance(z)) >= -1 && balance <= 1)
@@ -147,11 +139,9 @@ static void fixInsert(AVLMap *map, AVLNode *n)
         {
             return;
         }
-        // printf("balance on %d is %d\n", *((int*)(z->kv->key)), calcBalance(z));
         z = z->parent;
     }
 
-    // printf("fixing unbalanced node %d\n", *((int *)(z->kv->key)));
     if (balance > 0)
     {
         if (calcHeight(z->left->left) > calcHeight(z->left->right))
@@ -220,7 +210,6 @@ static int calcHeight(AVLNode *n)
  * */
 static AVLNode *rightRotate(AVLMap *map, AVLNode *n)
 {
-    // printf("right rotate on %d\n", *((int *)(n->kv->key)));
     AVLNode *p = n->left;
     AVLNode *pRight = p->right;
 
@@ -272,7 +261,6 @@ static void updateHeight(AVLNode *n) {
  * */
 static AVLNode *leftRotate(AVLMap *map, AVLNode *n)
 {
-    // printf("left rotate on %d\n", *((int *)(n->kv->key)));
     AVLNode *p = n->right;
     AVLNode *pLeft = p->left;
 
@@ -334,13 +322,11 @@ static int isRightChild(AVLNode *n)
 /** @override */
 KVPair *AVLDelete(AVLMap *map, void *key)
 {
-    // printf("calling search\n");
     AVLNode *removed = searchNode(map, key);
 
     if (removed == NULL)
     {
         // key was not in the tree
-        // printf("key not found\n");
         return NULL;
     }
 
@@ -357,8 +343,6 @@ KVPair *AVLDelete(AVLMap *map, void *key)
     map->root = deleteHelper(map, map->root, key);
     map->size--;
     map->root->parent = NULL;
-    // printf("After deleting %p: ", key);
-    // AVLPrintInOrder(map);
     return ret;
 }
 
@@ -368,7 +352,6 @@ KVPair *AVLDelete(AVLMap *map, void *key)
  * */
 static AVLNode *deleteHelper(AVLMap *map, AVLNode *n, void *key)
 {
-    //printf("deleting %d\n", (unsigned int)key);
     if (n == NULL)
     {
         return n;
@@ -486,14 +469,11 @@ void *AVLSearch(AVLMap *map, void *key)
  * */
 static AVLNode *searchNode(AVLMap *map, void *key)
 {
-    // printf("Looking for %d\n", *((int *)key));
     AVLNode *curr = map->root;
     while (curr != NULL)
     {
         cmpFunc compare = map->cmpKey;
-        //  printf("Comparing %d with %d\n", *((int *)key), *((int *)curr->kv->key));
         int comparison = (*compare)(key, curr->kv->key);
-        // printf("comparison was %d\n", comparison);
         if (comparison == 0)
         {
             break;
