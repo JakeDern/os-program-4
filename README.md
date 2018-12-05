@@ -7,8 +7,7 @@ This library is implemented using two AVL trees. One tree tracks allocated point
 # Credits
 General insertion and deletion algorithms for the tree, but not exact code, were taken from:
 
-https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
-
+https://www.geeksforgeeks.org/avl-tree-set-1-insertion/ &nbsp
 https://www.geeksforgeeks.org/avl-tree-set-2-deletion/
 
 Left/Right rotation algorithms/diagrams from this wikipedia article were used to write the code for rotations. Though no code was copied:
