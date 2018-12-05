@@ -17,6 +17,11 @@ static void updateHeight(AVLNode *n);
 
 static void AVLPrintInOrder(AVLMap *map)
 {
+    if (map->root != NULL) {
+        printf("root is: (%p)::: ", map->root->kv->key);
+    } else {
+        printf("root is null::: ");
+    }
     printHelper(map->root);
     printf("\n");
 }
@@ -25,7 +30,9 @@ static void printHelper(AVLNode *n)
 {
     if (n != NULL)
     {
-        printHelper(n->left);
+        AVLNode root = *n;
+        AVLNode *left = root.left;
+        printHelper(left);
         printf("%p", n->kv->key);
         if (n->parent != NULL)
         {

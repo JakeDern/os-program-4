@@ -13,11 +13,13 @@ int compareKey(void *a, void *b);
 
 int compareKey(void *a, void *b)
 {
-    if (a > b)
+    unsigned int aVal = (unsigned int) a;
+    unsigned int bVal = (unsigned int) b;
+    if (aVal > bVal)
     {
         return 1;
     }
-    else if (a == b)
+    else if (aVal == bVal)
     {
         return 0;
     }
@@ -100,10 +102,12 @@ void free537(void *ptr)
         }
     }
 
+    unsigned int *oldPtr = malloc(sizeof(unsigned int));
+    *oldPtr = (unsigned int) ptr;
     KVPair *temp1 = (KVPair *)AVLDelete(allocMap, ptr);
     free(temp1->key);
     free(temp1->val);
-    AVLPut(freeMap, (void *)ptr, (void *)ptr);
+    AVLPut(freeMap, (void *)oldPtr, (void *)oldPtr);
     free(ptr);
 
     return;
