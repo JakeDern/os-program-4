@@ -64,10 +64,9 @@ AVLMap *newAVLMap(cmpFunc compare)
 }
 
 /** @override */
-void AVLPut(AVLMap *map, void *key, void *val)
-{
-    if (map->root == NULL)
-    {
+void AVLPut(AVLMap *map, void *key, void *val) {
+    // Edge: this is first insertion
+    if (map->root == NULL) {
         map->root = newAVLNode(key, val);
         map->size = 1;
         return;
