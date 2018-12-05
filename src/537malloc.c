@@ -106,9 +106,9 @@ void free537(void *ptr)
     *oldPtr = (unsigned int) ptr;
     KVPair *temp1 = (KVPair *)AVLDelete(allocMap, ptr);
     free(temp1->key);
-    free(temp1->val);
+    //free(temp1->val);
     AVLPut(freeMap, (void *)oldPtr, (void *)oldPtr);
-    free(ptr);
+    //free(ptr);
 
     return;
 }
