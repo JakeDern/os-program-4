@@ -6,6 +6,7 @@
 #include "./types/AVLMap.h"
 #include <stddef.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 static int init = 0;
 static AVLMap *allocMap;
@@ -17,8 +18,8 @@ int compareKey(void *a, void *b);
 
 int compareKey(void *a, void *b)
 {
-    unsigned int aVal = (unsigned int)a;
-    unsigned int bVal = (unsigned int)b;
+    uintptr_t aVal = (uintptr_t)a;
+    uintptr_t bVal = (uintptr_t)b;
     if (aVal > bVal)
     {
         return 1;
@@ -87,10 +88,10 @@ void free537(void *ptr)
             unsigned int tempVal = (unsigned int)temp->kv->key + (unsigned int)*(size_t *)(temp->kv->val);
             if (tempVal > (unsigned int)ptr)
             {
-                fprintf(stderr, "Attempt to clear memory in another block");
+                fprintf(stderr, "Attempt to clear memory in another block\n");
                 exit(-1);
             }
-            fprintf(stderr, "Attempt to clear unallocated memory");
+            fprintf(stderr, "Attempt to clear unallocated memory\n");
             exit(-1);
         }
         printf("About to check freemap for item\n");
@@ -101,13 +102,13 @@ void free537(void *ptr)
         }
         else
         {
-            fprintf(stderr, "Attempt to clear unallocated memory");
+            fprintf(stderr, "Attempt to clear unallocated memory\n");
             exit(-1);
         }
     }
 
-    unsigned int *oldPtr = malloc(sizeof(unsigned int));
-    *oldPtr = (unsigned int)ptr;
+    uintptr_t *oldPtr = malloc(sizeof(uintptr_t));
+    *oldPtr = (uintptr_t)ptr;
     KVPair *temp1 = (KVPair *)AVLDelete(allocMap, ptr);
     free(temp1->val);
     free(temp1);
@@ -153,15 +154,15 @@ void memcheck537(void *ptr, size_t size)
         init537Malloc();
     }
     AVLNode *nodeBefore = findNodeBefore(ptr);
-    unsigned int testVal = (unsigned int)ptr + (unsigned int)size;
+    uintptr_t testVal = (uintptr_t)ptr + (uintptr_t)size;
     unsigned int memVal = 0;
     if (nodeBefore != NULL)
     {
-        memVal = (unsigned int)(nodeBefore->kv->key) + (unsigned int)*(size_t *)nodeBefore->kv->val;
+        memVal = (uintptr_t)(nodeBefore->kv->key) + *(unsigned int*)nodeBefore->kv->val;
     }
     if (testVal > memVal)
     {
-        fprintf(stderr, "The memory block spanning from %u to %u is not fully included in any block allocated by malloc537.", (unsigned int)ptr, (unsigned int)ptr + (unsigned int)size);
+        fprintf(stderr, "The memory block spanning from %p to %p is not fully included in any block allocated by malloc537.", ptr, (char*)ptr + size);
         exit(-1);
     }
     return;
