@@ -1,3 +1,7 @@
+/**
+ * @author Jake Dern netid: dern2 cslogin: dern
+ * @author Alex Dallman netid: adallman2 cslogin: adallman
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "./AVLNode.h"
@@ -79,8 +83,6 @@ void AVLPut(AVLMap *map, void *key, void *val) {
     int comparison;
     while (curr != NULL)
     {
-        void *test = curr->kv;
-        *compare;
         comparison = (*compare)(key, curr->kv->key);
         prev = curr;
         if (comparison == 0)

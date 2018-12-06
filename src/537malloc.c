@@ -13,8 +13,8 @@ int compareKey(void *a, void *b);
 
 int compareKey(void *a, void *b)
 {
-    unsigned int aVal = (unsigned int) a;
-    unsigned int bVal = (unsigned int) b;
+    unsigned int aVal = (unsigned int)a;
+    unsigned int bVal = (unsigned int)b;
     if (aVal > bVal)
     {
         return 1;
@@ -61,7 +61,8 @@ void *malloc537(size_t size)
         KVPair *temp;
         if (((temp = (AVLDelete(freeMap, returnPtr))) != NULL))
         {
-            free(temp->key);
+            free(temp->val);
+            free(temp);
         }
     }
     return returnPtr;
@@ -75,7 +76,6 @@ void free537(void *ptr)
     }
     if ((AVLSearch(allocMap, ptr) == NULL))
     {
-        //TODO: Fix this with new specs
         AVLNode *temp;
         if ((temp = findNodeBefore(ptr)) != NULL)
         {
@@ -103,12 +103,12 @@ void free537(void *ptr)
     }
 
     unsigned int *oldPtr = malloc(sizeof(unsigned int));
-    *oldPtr = (unsigned int) ptr;
+    *oldPtr = (unsigned int)ptr;
     KVPair *temp1 = (KVPair *)AVLDelete(allocMap, ptr);
-    free(temp1->key);
-    //free(temp1->val);
-    AVLPut(freeMap, (void *)oldPtr, (void *)oldPtr);
-    //free(ptr);
+    free(temp1->val);
+    free(temp1);
+    AVLPut(freeMap, (void *)ptr, (void *)oldPtr);
+    free(ptr);
 
     return;
 }
@@ -131,8 +131,8 @@ void *realloc537(void *ptr, size_t size)
     if (AVLSearch(allocMap, ptr) != NULL)
     {
         KVPair *temp = (KVPair *)AVLDelete(allocMap, ptr);
-        free(temp->key);
         free(temp->val);
+        free(temp);
     }
     realloc(ptr, size);
     size_t *ptr1 = malloc(sizeof(size_t));
