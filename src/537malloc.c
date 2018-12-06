@@ -84,7 +84,7 @@ void free537(void *ptr)
         AVLNode *temp;
         if ((temp = findNodeBefore(ptr)) != NULL)
         {
-            uintptr_t tempVal = (uintptr_t)temp->kv->key + *(unsigned int*)(temp->kv->val);
+            uintptr_t tempVal = (uintptr_t)temp->kv->key + *(uintptr_t*)(temp->kv->val);
             if (tempVal > (uintptr_t)ptr)
             {
                 fprintf(stderr, "Error: Attempted to free memory in middle of a block\n");
@@ -126,7 +126,7 @@ void *realloc537(void *ptr, size_t size)
     {
         return malloc537(size);
     }
-    if ((unsigned int)size == 0)
+    if ((uintptr_t)size == 0)
     {
         fprintf(stderr, "Warning, reallocating memory at %p to size 0\n", ptr);
         free537(ptr);
@@ -158,10 +158,10 @@ void memcheck537(void *ptr, size_t size)
     }
     AVLNode *nodeBefore = findNodeBefore(ptr);
     uintptr_t testVal = (uintptr_t)ptr + (uintptr_t)size;
-    unsigned int memVal = 0;
+    uintptr_t memVal = 0;
     if (nodeBefore != NULL)
     {
-        memVal = (uintptr_t)(nodeBefore->kv->key) + *(unsigned int*)nodeBefore->kv->val;
+        memVal = (uintptr_t)(nodeBefore->kv->key) + *(uintptr_t*)nodeBefore->kv->val;
     }
     if (testVal > memVal)
     {
