@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
-#include "537malloc.h"
+#include "../537malloc.h"
 
 #define LIMIT 100000
 #define SIZE_RANGE 1000

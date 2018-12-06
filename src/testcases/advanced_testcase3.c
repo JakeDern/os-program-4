@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "537malloc.h"
+#include "../537malloc.h"
 
 int main() {
 	printf("Allocation 10 bytes of memory\n");

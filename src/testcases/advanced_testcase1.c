@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "537malloc.h"
+#include "../537malloc.h"
 #include <time.h>
 
 #define LIMIT 100000
