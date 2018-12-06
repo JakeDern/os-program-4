@@ -7,11 +7,11 @@ EXE = runner
 SCAN_BUILD_DIR = scan-build-out
 EXTRA_FLAGS = -g
 
-all: AVLNode.o AVLMap.o advanced_testcase2.o 537malloc.o
-	$(CC) -o $(EXE) AVLNode.o AVLMap.o 537malloc.o advanced_testcase2.o $(WARNING_FLAGS) $(EXTRA_FLAGS)
+all: AVLNode.o AVLMap.o advanced_testcase1.o 537malloc.o
+	$(CC) -o $(EXE) AVLNode.o AVLMap.o 537malloc.o advanced_testcase1.o $(WARNING_FLAGS) $(EXTRA_FLAGS)
 
-advanced_testcase2.o: ./advanced_testcase2.c
-	$(CC) -c ./advanced_testcase2.c $(WARNING_FLAGS) $(EXTRA_FLAGS)
+advanced_testcase1.o: ./advanced_testcase1.c
+	$(CC) -c ./advanced_testcase1.c $(WARNING_FLAGS) $(EXTRA_FLAGS)
 
 obj: 537malloc.o AVLNode.o AVLMap.o
 

@@ -84,25 +84,23 @@ void free537(void *ptr)
         AVLNode *temp;
         if ((temp = findNodeBefore(ptr)) != NULL)
         {
-            printf("found node before\n");
-            unsigned int tempVal = (unsigned int)temp->kv->key + (unsigned int)*(size_t *)(temp->kv->val);
-            if (tempVal > (unsigned int)ptr)
+            uintptr_t tempVal = (uintptr_t)temp->kv->key + *(unsigned int*)(temp->kv->val);
+            if (tempVal > (uintptr_t)ptr)
             {
-                fprintf(stderr, "Attempt to clear memory in another block\n");
+                fprintf(stderr, "Error: Attempted to free memory in middle of a block\n");
                 exit(-1);
             }
-            fprintf(stderr, "Attempt to clear unallocated memory\n");
+            fprintf(stderr, "Error: Attempted to free unallocated memory\n");
             exit(-1);
         }
-        printf("About to check freemap for item\n");
         if ((AVLSearch(freeMap, (void *)ptr) != NULL))
         {
-            fprintf(stderr, "Double free");
+            fprintf(stderr, "Error: Double free at address %p\n", ptr);
             exit(-1);
         }
         else
         {
-            fprintf(stderr, "Attempt to clear unallocated memory\n");
+            fprintf(stderr, "Error: Attempted to free unallocated memory\n");
             exit(-1);
         }
     }
@@ -130,6 +128,7 @@ void *realloc537(void *ptr, size_t size)
     }
     if ((unsigned int)size == 0)
     {
+        fprintf(stderr, "Warning, reallocating memory at %p to size 0\n", ptr);
         free537(ptr);
         return NULL;
     }
@@ -139,7 +138,11 @@ void *realloc537(void *ptr, size_t size)
         free(temp->val);
         free(temp);
     }
-    realloc(ptr, size);
+
+    if ( (ptr = realloc(ptr, size)) == NULL) {
+        fprintf(stderr, "failed to reallocate memory. Exiting...\n");
+        exit(-1);
+    }
     size_t *ptr1 = malloc(sizeof(size_t));
     *ptr1 = size;
     AVLPut(allocMap, ptr, (void *)ptr1);
@@ -162,7 +165,7 @@ void memcheck537(void *ptr, size_t size)
     }
     if (testVal > memVal)
     {
-        fprintf(stderr, "The memory block spanning from %p to %p is not fully included in any block allocated by malloc537.", ptr, (char*)ptr + size);
+        fprintf(stderr, "The memory block spanning from %p to %p is not fully included in any block allocated by malloc537\n", ptr, (char*)ptr + size);
         exit(-1);
     }
     return;
