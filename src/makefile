@@ -1,5 +1,5 @@
-# @author Jake Dern netid: dern2 cslogin: dern
-# @author Alex Dallman netid: adallman2 cslogin: adallman
+# @author Jake Dern netid: dern1 cslogin: dern
+# @author Alex Dallman netid: adallman1 cslogin: adallman
 
 CC = gcc
 WARNING_FLAGS = -Wall -Wextra
@@ -7,11 +7,11 @@ EXE = runner
 SCAN_BUILD_DIR = scan-build-out
 EXTRA_FLAGS = -g
 
-all: AVLNode.o AVLMap.o advanced_testcase2.o 537malloc.o
-	$(CC) -o $(EXE) AVLNode.o AVLMap.o 537malloc.o advanced_testcase2.o $(EXTRA_FLAGS)
+all: AVLNode.o AVLMap.o advanced_testcase1.o 537malloc.o
+	$(CC) -o $(EXE) AVLNode.o AVLMap.o 537malloc.o advanced_testcase1.o $(EXTRA_FLAGS)
 
-advanced_testcase2.o: ./advanced_testcase2.c
-	$(CC) $(WARNING_FLAGS) -c ./advanced_testcase2.c $(EXTRA_FLAGS)
+advanced_testcase1.o: ./advanced_testcase1.c
+	$(CC) $(WARNING_FLAGS) -c ./advanced_testcase1.c $(EXTRA_FLAGS)
 
 obj: 537malloc.o AVLNode.o AVLMap.o
 

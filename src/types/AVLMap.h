@@ -93,23 +93,4 @@ extern void* AVLSearch(AVLMap *map, void *key);
  **/
 extern void* AVLReplace(AVLMap *map, void *key, void *val);
 
-/**
- * Destructs the provided AVLMap, but
- * does not free the keys or values contained
- * within it
- * 
- * @param *tree the tree to destroy
- **/
-extern void AVLDestroy(AVLMap *map);
-
-/**
- * Destructs the provided AVLMap and frees all
- * data provided to it using the provided deconstructors
- *
- * @param tree the tree to destroy
- * @param destructor a function which will be called on each
- * data item in the tree to destroy it
- **/
-extern void AVLDestroyAndFree(AVLMap *map, destructKey dKey, destructVal dVal);
-
 #endif

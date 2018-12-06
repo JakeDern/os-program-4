@@ -3,7 +3,7 @@
 #include "537malloc.h"
 #include <time.h>
 
-#define LIMIT 1000000
+#define LIMIT 100000
 #define SIZE 1
 
 char *ptr[LIMIT];

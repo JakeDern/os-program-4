@@ -10,7 +10,6 @@
 static int isRightChild(AVLNode *n);
 static AVLNode *rightRotate(AVLMap *map, AVLNode *n);
 static AVLNode *leftRotate(AVLMap *map, AVLNode *n);
-static void printHelper(AVLNode *n);
 static AVLNode *getLeftMaximum(AVLNode *n);
 static void fixInsert(AVLMap *map, AVLNode *n);
 static int calcBalance(AVLNode *n);
@@ -18,37 +17,6 @@ static int calcHeight(AVLNode *n);
 static AVLNode *deleteHelper(AVLMap *map, AVLNode *n, void *key);
 static AVLNode *searchNode(AVLMap *map, void *key);
 static void updateHeight(AVLNode *n);
-
-static void AVLPrintInOrder(AVLMap *map)
-{
-    if (map->root != NULL) {
-        printf("root is: (%p)::: ", map->root->kv->key);
-    } else {
-        printf("root is null::: ");
-    }
-    printHelper(map->root);
-    printf("\n");
-}
-
-static void printHelper(AVLNode *n)
-{
-    if (n != NULL)
-    {
-        AVLNode root = *n;
-        AVLNode *left = root.left;
-        printHelper(left);
-        printf("%p", n->kv->key);
-        if (n->parent != NULL)
-        {
-            printf("(p=%p) ", n->parent->kv->key);
-        }
-        else
-        {
-            printf("(p=null) ");
-        }
-        printHelper(n->right);
-    }
-}
 
 /** @override */
 AVLMap *newAVLMap(cmpFunc compare)
@@ -113,7 +81,7 @@ void AVLPut(AVLMap *map, void *key, void *val) {
         prev->right = newNode;
     }
 
-    map->root->parent == NULL;
+    map->root->parent = NULL;
     curr = newNode;
     while (curr != NULL) {
         updateHeight(curr);
@@ -516,14 +484,4 @@ void *AVLReplace(AVLMap *map, void *key, void *val)
     AVLPut(map, key, val);
 
     return oldVal;
-}
-
-/** @override */
-void AVLDestroy(AVLMap *map)
-{
-}
-
-/** @override */
-void AVLDestroyAndFree(AVLMap *map, destructKey dKey, destructVal dVal)
-{
 }
