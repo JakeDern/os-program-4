@@ -4,6 +4,9 @@ A safe malloc/free library. This program operates in a similar fashion to valgri
 # Implementation
 This library is implemented using two AVL trees. One tree tracks allocated pointers and the other tracks pointers which have been allocated and then freed by the library. When a system call to allocate/free is made, the library checks various error conditions like a double free by checking the list of pointers that have been freed before printing a detailed error message and exiting the program. When allocations are made the "free tree" is also checked for existing pointers with the same address which will be removed if there is a match. 
 
+# Unresolved Clang warnings
+There is a single unresolved clang warning which points to a possible null dereference in the left rotation code in our AVL tree implementation. This warning is claiming that a dereference is possible on a null node which is the second left child of the node that the rotation is being performed on ie x->left->left. This warning is technically correct that there is a danger of a seg fault here, but this code will not be ran unless the tree is of size at least 3 (as AVL trees need a height imbalance of > 1 to do rotations). This implies that x->left->left must not be null for this imbalance to exist, and the rotation to happen, and thus will not segfault.  
+
 # Credits
 General insertion and deletion algorithms for the tree, but not exact code, were taken from:
 
